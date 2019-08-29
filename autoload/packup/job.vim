@@ -4,10 +4,11 @@ function! s:job_out_handler(channel, msg) abort
   endif
 endfunction
 
-function! s:job_exit_handler(channel, msg) abort
+function! s:job_exit_handler(callback, channel, msg) abort
   if ch_status(a:channel) ==# "fail"
     echom 'packup: job: exit: '.a:msg
   endif
+  call a:callback()
 endfunction
 
 function! s:job_err_handler(channel, msg) abort
@@ -29,7 +30,7 @@ function! packup#job#new(cmd, callback) abort
         \ 'out_mode': 'nl',
         \ 'out_cb': function('s:job_out_handler'),
         \ 'err_cb': function('s:job_err_handler'),
-        \ 'exit_cb': a:callback,
+        \ 'exit_cb': function('s:job_exit_handler', [a:callback])
         \})
   return job
 endfunction

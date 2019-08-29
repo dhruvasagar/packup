@@ -31,9 +31,9 @@ function! s:plugin_methods.exec_do() dict abort
   if self['do'] !=# ''
     if type(self['do']) == v:t_string
       echom 'executing '.self['do']
-      silent! exec self['do'] | redraw!
+      exec self['do']
     elseif type(self['do']) == v:t_func
-      silent! call self['do']() | redraw!
+      call self['do']()
     endif
   endif
 endfunction
@@ -66,7 +66,7 @@ endfunction
 
 function! s:plugin_methods.install() dict abort
   if self.exists() | return | endif
-  echo 'Installing '.self['name']
+  echom 'Installing '.self['name']
   call self.clone()
   if self.is_local()
     exec 'set runtimepath+='.self['url']
@@ -78,7 +78,7 @@ function! s:plugin_methods.update() dict abort
   if !self.exists()
     return self.install()
   endif
-  echo 'Updating '.self['name']
+  echom 'Updating '.self['name']
   if self['frozen'] | return | endif
   let cmd = [
         \ 'git',

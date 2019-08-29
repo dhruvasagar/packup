@@ -38,7 +38,7 @@ function! s:plugin_methods.exec_do() dict abort
   endif
 endfunction
 
-function! s:plugin_methods.post_install(...) dict abort
+function! s:plugin_methods.post_install() dict abort
   packloadall
   silent! exec 'helptags' self['path'].'/doc'
   call self.exec_do()

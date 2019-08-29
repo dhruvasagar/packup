@@ -55,7 +55,11 @@ function! s:plugin_methods.clone() dict abort
     if self['branch'] !=# ''
       let cmd += ['--branch=' . self['branch']]
     endif
-    call system(join(cmd, ' '))
+    if has('vim_starting')
+      call system(join(cmd, ' '))
+    else
+      call packup#job#new(cmd, self.post_install)
+    endif
     call self.post_install()
   endif
 endfunction

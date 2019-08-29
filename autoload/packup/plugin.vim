@@ -28,7 +28,7 @@ function! s:plugin_methods.is_local() dict abort
 endfunction
 
 function! s:plugin_methods.exec_do() dict abort
-  if self['do'] !=# ''
+  if !empty(self['do'])
     if type(self['do']) == v:t_string
       echom 'executing '.self['do']
       exec self['do']
@@ -52,7 +52,7 @@ function! s:plugin_methods.clone() dict abort
           \ self['url'],
           \ self['path'],
           \]
-    if self['branch'] !=# ''
+    if !empty(self['branch'])
       let cmd += ['--branch=' . self['branch']]
     endif
     if has('vim_starting')

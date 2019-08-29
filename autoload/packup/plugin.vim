@@ -55,6 +55,13 @@ function! s:plugin_methods.clone() dict abort
     if self['branch'] !=# ''
       let cmd += ['--branch=' . self['branch']]
     endif
+    if has('vim_starting')
+      echom 'Installing '.self['name']
+      call system(join(cmd, ' '))
+      call self.post_install()
+    else
+      call packup#job#new(cmd, self.post_install)
+    endif
   endif
 endfunction
 
@@ -64,13 +71,6 @@ function! s:plugin_methods.install() dict abort
   endif
   if self.exists() | return | endif
   call self.clone()
-  if has('vim_starting')
-    echom 'Installing '.self['name']
-    call system(join(cmd, ' '))
-    call self.post_install()
-  else
-    call packup#job#new(cmd, self.post_install)
-  endif
 endfunction
 
 function! s:plugin_methods.update() dict abort

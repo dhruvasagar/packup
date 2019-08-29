@@ -38,8 +38,18 @@ function! s:plugin_methods.exec_do() dict abort
   endif
 endfunction
 
+function! s:plugin_methods.load() dict abort
+  let lazy = 0
+  if self['type'] ==# 'opt' && !empty(self['for']) | let lazy = 1 | endif
+  if lazy
+    exec 'autocmd FileType' self['for'] 'packadd' self['name']
+  else
+    packloadall
+  endif
+endfunction
+
 function! s:plugin_methods.post_install() dict abort
-  packloadall
+  call self.load()
   silent! exec 'helptags' self['path'].'/doc'
   call self.exec_do()
 endfunction
@@ -93,11 +103,13 @@ endfunction
 function! packup#plugin#new(plugin_url, ...) abort
   let default_options = {
         \ 'do': '',
+        \ 'for': '',
         \ 'branch': '',
         \ 'frozen': 0,
         \ 'type': 'start',
         \}
   let options = extend(default_options, get(a:000, 0, {}))
+  if !empty(options['for']) | let options['type'] = 'opt' | endif
   let plugin = {
         \ 'url': a:plugin_url,
         \ 'name': s:get_name(a:plugin_url),

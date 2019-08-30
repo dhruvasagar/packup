@@ -1,4 +1,4 @@
-*packup.txt*                  Package Manager so minimal, you forget it exists
+*packup* *packup.txt*             Package Manager so minimal, you forget it exists
 ==============================================================================
                  Packup, yet another package manager for VIM,
                            that's actually Minimal.

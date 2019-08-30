@@ -1,0 +1,120 @@
+*packup.txt*                  Package Manager so minimal, you forget it exists
+==============================================================================
+                 Packup, yet another package manager for VIM,
+                           that's actually Minimal.
+
+                Author: Dhruva Sagar <http://dhruvasagar.com/>
+              License: Same terms as Vim itself (see |license|)
+==============================================================================
+CONTENTS                                                     *packup-contents*
+
+              1. Introduction ........... |packup-introduction|
+              2. Installation ........... |packup-installation|
+              3. Usage .................. |packup-usage|
+              4. Commands ............... |packup-commands|
+              5. API .................... |packup-api|
+              6. Contributing ........... |packup-contributing|
+              7. Reporting Issues ....... |packup-issues|
+
+==============================================================================
+INTRODUCTION                                             *packup-introduction*
+
+Packup leverages |packages| and |jobs| for managing vim plugins.
+
+All packages are installed synchronously on startup if they haven't been
+installed already. They are installed asynchronously when using
+|packup-:PackupInstall| or updated using |packup-:PackupUpdate|.
+
+Note: At present it only supports VIM, support for NeoVIM is being added.
+      This section will be removed once that has been released.
+
+==============================================================================
+INSTALLATION                                             *packup-installation*
+
+Clone packup in `pack/packup/opt/packup` folder within your vim home >
+      $ git clone git@github.com:dhruvasagar/packup.git \
+          ~/.vim/pack/packup/opt/packup
+<
+==============================================================================
+USAGE                                                           *packup-usage*
+
+Adding plugins is easy, following is a sample vimrc with a few plugins: >
+      packadd packup
+
+      " Initialize packup
+      call packup#init()
+
+      " Let packup manage itself
+      call packup#add('git@github.com:dhruvasagar/packup.git',
+              \ {'type': 'opt'})
+
+      " Add rest of your plugins
+      call packup#add('/usr/local/my_vim_plugin')
+      call packup#add('git@github.com:dhruvasagar/vim-zoom.git')
+      call packup#add('git@github.com:dhruvasagar/vim-procession.git',
+              \ {'type': 'opt'})
+      call packup#add('git@github.com:pangloss/vim-javascript.git',
+              \ {'for': 'javascript'})
+
+      " Remove any plugins not used anymore
+      call packup#autoremove()
+<
+==============================================================================
+COMMANDS                                                       *packup-commands*
+
+                                                         *packup-:PackupInstall*
+:PackupInstall
+      Plugins asynchronoysly
+                                                           *packup-PackupUpdate*
+:PackupUpdate
+      Update Plugins asynchronously
+
+==============================================================================
+API                                                               *packup-api*
+
+                                                                 *packup#init*
+packup#init()
+      Initialize Packup
+
+                                                                  *packup#add*
+packup#add('plugin_path_or_git_uri')
+      Add a plugin using it's path on the file system (can be anywhere), or
+      using a complete git uri.
+
+      Note: I do not offer short hand versions like other plugins to keep
+      things simple.
+
+                                                           *packup#autoremove*
+packup#autoremove()
+      Remove unused plugins. Strongly recommend to put this in your vimrc at
+      the end of adding all plugins
+
+      Note: Since we use vim's |packages| feature, it is important that we
+      actually remove plugins entirely to avoid loading them since vim loads
+      these plugins automatically.
+
+                                                          *packup#install_all*
+packup#install_all()
+      Install all plugins asynchronously.
+
+      Note: Sourcing your vimrc again should just install any newly added
+      plugins however this api still exists for convenience.
+
+                                                           *packup#update_all*
+packup#update_all()
+      Update all plugins asynchronously.
+
+==============================================================================
+CONTRIBUTING                                             *packup-contributing*
+
+If you want to take a stab at it, by all means, send me a pull request on
+Github (https://github.com/dhruvasagar/packup) or get in touch with me
+directly via e-mail at dhruva 'dot' sagar 'at' gmail.com
+
+==============================================================================
+REPORTING ISSUES                                               *packup-issues*
+
+If you find any issues, please report them at
+https://github.com/dhruvasagar/packup/issues
+
+ vim:tw=78:ts=8:ft=help:norl:ai:et

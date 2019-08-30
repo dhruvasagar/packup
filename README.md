@@ -7,7 +7,7 @@ Yet another package manager for VIM, except that it's truly Minimal.
 Package manager so dope, you just packup and leave.
 Leverage `packages` and `jobs` for easy & fast management.
 
-> NOTE: This is only supports VIM, support for NeoVIM is being added.
+> NOTE: This only supports VIM, support for NeoVIM is being added.
 
 ## Requirements
 

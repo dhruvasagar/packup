@@ -89,7 +89,6 @@ function! s:plugin_methods.update() dict abort
     return self.install()
   endif
   if self['frozen'] | return | endif
-  echom 'Updating '.self['name']
   let cmd = [
         \ 'git',
         \ '-C',

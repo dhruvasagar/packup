@@ -57,6 +57,7 @@ endfunction
 function! s:plugin_methods.clone() dict abort
   if self.is_local() | return | endif
   if !self.exists()
+    echom 'Installing '.self['name']
     let cmd = [
           \ 'git clone --quiet',
           \ self['url'],
@@ -66,7 +67,6 @@ function! s:plugin_methods.clone() dict abort
       let cmd += ['--branch=' . self['branch']]
     endif
     if has('vim_starting')
-      echom 'Installing '.self['name']
       call system(join(cmd, ' '))
       call self.post_install()
     else
@@ -89,6 +89,7 @@ function! s:plugin_methods.update() dict abort
     return self.install()
   endif
   if self['frozen'] | return | endif
+  echom 'Updating '.self['name']
   let cmd = [
         \ 'git',
         \ '-C',

@@ -39,9 +39,7 @@ function! s:plugin_methods.exec_do() dict abort
 endfunction
 
 function! s:plugin_methods.load() dict abort
-  let lazy = 0
-  if self['type'] ==# 'opt' && !empty(self['for']) | let lazy = 1 | endif
-  if lazy
+  if !empty(self['for'])
     exec 'autocmd FileType' self['for'] 'packadd' self['name']
   else
     packloadall
@@ -79,6 +77,7 @@ function! s:plugin_methods.install() dict abort
   if self.is_local()
     exec 'set runtimepath+='.self['url']
   endif
+  if !empty(self['for']) | call self.load() | endif
   if self.exists() | return | endif
   call self.clone()
 endfunction

@@ -40,7 +40,8 @@ endfunction
 
 function! s:plugin_methods.load() dict abort
   if !empty(self['for'])
-    exec 'autocmd FileType' self['for'] 'packadd' self['name']
+    exec 'autocmd FileType' self['for'] '++once packadd' self['name']
+    exec 'autocmd BufNewFile,BufRead * filetype detect'
   else
     packloadall
   endif

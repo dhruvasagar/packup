@@ -13,13 +13,7 @@ function! packup#add(plugin_url, ...) abort
   let s:plugins[a:plugin_url] = plugin
 endfunction
 
-function! packup#install_all() abort
-  for plugin in values(s:plugins)
-    call plugin.install()
-  endfor
-endfunction
-
-function! packup#update_all() abort
+function! packup#update_plugins() abort
   for plugin in values(s:plugins)
     call plugin.update()
   endfor

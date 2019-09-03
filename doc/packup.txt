@@ -21,9 +21,9 @@ INTRODUCTION                                             *packup-introduction*
 
 Packup leverages |packages| and |jobs| for managing vim plugins.
 
-All packages are installed synchronously on startup if they haven't been
-installed already. They are installed asynchronously when using
-|packup-:PackupInstall| or updated using |packup-:PackupUpdate|.
+All packages are installed synchronously on vim startup if they haven't been
+installed already or asynchronously if sourcing vimrc. You can also update
+plugins asynchronously using |packup-:PackupUpdate|.
 
 Note: At present it only supports VIM, support for NeoVIM is being added.
       This section will be removed once that has been released.
@@ -62,9 +62,6 @@ Adding plugins is easy, following is a sample vimrc with a few plugins: >
 ==============================================================================
 COMMANDS                                                       *packup-commands*
 
-                                                         *packup-:PackupInstall*
-:PackupInstall
-      Plugins asynchronoysly
                                                            *packup-PackupUpdate*
 :PackupUpdate
       Update Plugins asynchronously
@@ -93,15 +90,8 @@ packup#autoremove()
       actually remove plugins entirely to avoid loading them since vim loads
       these plugins automatically.
 
-                                                          *packup#install_all*
-packup#install_all()
-      Install all plugins asynchronously.
-
-      Note: Sourcing your vimrc again should just install any newly added
-      plugins however this api still exists for convenience.
-
-                                                           *packup#update_all*
-packup#update_all()
+                                                       *packup#update_plugins*
+packup#update_plugins()
       Update all plugins asynchronously.
 
 ==============================================================================

@@ -3,7 +3,6 @@ function! packup#init() abort
   let g:plugins = s:plugins
   call mkdir(g:packup_path.'/opt', 'p')
   call mkdir(g:packup_path.'/start', 'p')
-  syntax enable
   filetype plugin indent on
 endfunction
 

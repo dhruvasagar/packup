@@ -43,7 +43,11 @@ function! s:plugin_methods.load() dict abort
     exec 'autocmd FileType' self['for'] '++once packadd' self['name']
     exec 'autocmd BufNewFile,BufRead * filetype detect'
   else
-    packloadall
+    if has('vim_starting')
+      packloadall
+    else
+      packloadall!
+    endif
   endif
 endfunction
 

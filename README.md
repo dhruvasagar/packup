@@ -1,13 +1,24 @@
 # PackUp
 
-Yet another package manager for VIM, except that it's truly Minimal.
+A small wrapper around git for automating process of installing / updating
+plugins
 
 ## Overview
 
-Package manager so dope, you just packup and leave.
-Leverage `packages` and `jobs` for easy & fast management.
+VIM already has support for `packages`, so all that's left for us to automate
+is adding / removing / updating them leveraging git.
+
+That's what this plugin does, as a bonus it provides an ability to do so
+asynchronously leveraging vim's `jobs`.
 
 > NOTE: This only supports VIM, support for NeoVIM is being added.
+
+This also provides a few basic needed features :
+
+* Lazy loading plugins
+* Freeze plugins
+* Install plugins from a specific branch / ref
+* Post installation hook
 
 ## Requirements
 

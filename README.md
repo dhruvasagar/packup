@@ -6,12 +6,12 @@ plugins
 ## Overview
 
 VIM already has support for `packages`, so all that's left for us to automate
-is adding / removing / updating them leveraging git.
+is adding / removing / updating them leveraging `git`.
 
 That's what this plugin does, as a bonus it provides an ability to do so
 asynchronously leveraging vim's `jobs`.
 
-> NOTE: This only supports VIM, support for NeoVIM is being added.
+> NOTE: This only supports `VIM`, support for `NeoVIM` is being added.
 
 This also provides a few basic needed features :
 

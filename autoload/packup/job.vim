@@ -15,23 +15,36 @@ function! s:job_err_handler(channel, msg) abort
   echom 'packup: job: err: '.a:msg
 endfunction
 
+function! s:nvim_job_handler(callback, job_id, data, event) abort
+  if a:event == "stderr"
+    echom 'packup: job: err: '.string(a:data)
+  elseif a:event == "exit"
+    echom 'packup: job: exit: '.string(a:data)
+    call a:callback()
+  endif
+endfunction
+
 function! packup#job#new(cmd, ...) abort
   let Callback = a:0 ? a:1 : {->''}
-  if has('nvim')
-    let job = jobstart(a:cmd, {
-          \ 'on_stdout': function('s:job_out_handler'),
-          \ 'on_stderr': function('s:job_err_handler'),
-          \ 'on_exit': Callback,
+  let cmd = join(a:cmd, ' ')
+  if has('vim_starting')
+    call system(cmd)
+  else
+    if has('nvim')
+      let job = jobstart(a:cmd, {
+            \ 'on_stdout': function('s:nvim_job_handler', [Callback]),
+            \ 'on_stderr': function('s:nvim_job_handler', [Callback]),
+            \ 'on_exit': function('s:nvim_job_handler', [Callback])
+            \})
+      return job
+    endif
+    let job = job_start(cmd, {
+          \ 'in_io': 'null',
+          \ 'out_mode': 'nl',
+          \ 'out_cb': function('s:job_out_handler'),
+          \ 'err_cb': function('s:job_err_handler'),
+          \ 'exit_cb': function('s:job_exit_handler', [Callback])
           \})
     return job
   endif
-  let cmd = join(a:cmd, ' ')
-  let job = job_start(cmd, {
-        \ 'in_io': 'null',
-        \ 'out_mode': 'nl',
-        \ 'out_cb': function('s:job_out_handler'),
-        \ 'err_cb': function('s:job_err_handler'),
-        \ 'exit_cb': function('s:job_exit_handler', [Callback])
-        \})
-  return job
 endfunction

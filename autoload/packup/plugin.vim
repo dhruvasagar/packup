@@ -29,12 +29,19 @@ endfunction
 
 function! s:plugin_methods.exec_do() dict abort
   if !empty(self['do'])
-    if type(self['do']) == v:t_string
-      echom 'executing '.self['do']
-      exec self['do']
-    elseif type(self['do']) == v:t_func
-      call self['do']()
-    endif
+    noautocmd let l:pwd = chdir(self['path'])
+    try
+      echom 'packup: ' .self['name'] . ' executing Do Callback'
+      if type(self['do']) == v:t_string
+        exec self['do']
+      elseif type(self['do']) == v:t_func
+        call self['do']()
+      endif
+    catch
+      echohl ErrorMsg | echom v:throwpoint | echom v:exception | echohl None
+    finally
+      noautocmd call chdir(l:pwd)
+    endtry
   endif
 endfunction
 
@@ -43,6 +50,9 @@ function! s:plugin_methods.load() dict abort
     exec 'autocmd FileType' self['for'] '++once packadd' self['name']
     exec 'autocmd BufNewFile,BufRead * filetype detect'
   else
+    if !empty(self['rtp'])
+      exec 'set runtimepath+='.self['path'].'/'.self['rtp']
+    endif
     if has('vim_starting')
       packloadall
     else
@@ -51,10 +61,27 @@ function! s:plugin_methods.load() dict abort
   endif
 endfunction
 
-function! s:plugin_methods.post_install() dict abort
+function! s:plugin_methods.finalize_install() dict abort
   call self.load()
   silent! exec 'helptags' self['path'].'/doc'
   call self.exec_do()
+endfunction
+
+function! s:plugin_methods.post_install() dict abort
+  if empty(self['rev'])
+    call self.finalize_install()
+    return
+  endif
+
+  let cmd = [
+        \ 'git',
+        \ '-C',
+        \ self['path'],
+        \ 'reset',
+        \ '--hard',
+        \ self['rev']
+        \]
+  call packup#job#new(cmd, self.finalize_install)
 endfunction
 
 function! s:plugin_methods.clone() dict abort
@@ -69,12 +96,7 @@ function! s:plugin_methods.clone() dict abort
     if !empty(self['branch'])
       let cmd += ['--branch=' . self['branch']]
     endif
-    if has('vim_starting')
-      call system(join(cmd, ' '))
-      call self.post_install()
-    else
-      call packup#job#new(cmd, self.post_install)
-    endif
+    call packup#job#new(cmd, self.post_install)
   endif
 endfunction
 
@@ -92,7 +114,7 @@ function! s:plugin_methods.update() dict abort
   if !self.exists()
     return self.install()
   endif
-  if self['frozen'] | return | endif
+  if self['frozen'] || !empty(self['rev']) | return | endif
   let cmd = [
         \ 'git',
         \ '-C',
@@ -108,6 +130,8 @@ function! packup#plugin#new(plugin_url, ...) abort
   let default_options = {
         \ 'do': '',
         \ 'for': '',
+        \ 'rtp': '',
+        \ 'rev': '',
         \ 'branch': '',
         \ 'frozen': 0,
         \ 'type': 'start',

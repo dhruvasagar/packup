@@ -7,4 +7,5 @@ if !exists('g:packup_path')
   let g:packup_path = expand('~/.vim/pack/packup')
 endif
 
-command! -bar PackupUpdate call packup#update_plugins()
+command! -bar PackupUpdate call packup#update()
+command! -bar PackupInstall call packup#install()

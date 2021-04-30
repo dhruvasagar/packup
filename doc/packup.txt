@@ -3,6 +3,8 @@
                  Packup, yet another package manager for VIM,
                            that's actually Minimal.
 
+                                Version 0.1.0
+
                 Author: Dhruva Sagar <http://dhruvasagar.com/>
               License: Same terms as Vim itself (see |license|)
 ==============================================================================

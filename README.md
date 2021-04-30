@@ -1,4 +1,4 @@
-# PackUp
+# PackUp v0.1.0
 
 A small wrapper around git for automating process of installing / updating
 plugins

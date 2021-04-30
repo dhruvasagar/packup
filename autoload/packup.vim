@@ -13,7 +13,12 @@ function! packup#add(plugin_url, ...) abort
   let s:plugins[a:plugin_url] = plugin
 endfunction
 
-function! packup#update_plugins() abort
+function! packup#install() abort
+  " process newly added / removed plugins
+  source $MYVIMRC
+endfunction
+
+function! packup#update() abort
   for plugin in values(s:plugins)
     call plugin.update()
   endfor

@@ -3,7 +3,7 @@
                  Packup, yet another package manager for VIM,
                            that's actually Minimal.
 
-                                Version 0.1.0
+                                Version 0.2.0
 
                 Author: Dhruva Sagar <http://dhruvasagar.com/>
               License: Same terms as Vim itself (see |license|)
@@ -21,14 +21,11 @@ CONTENTS                                                     *packup-contents*
 ==============================================================================
 INTRODUCTION                                             *packup-introduction*
 
-Packup leverages |packages| and |jobs| for managing vim plugins.
+Packup leverages |packages| and |jobs| for managing vim / neovim plugins.
 
-All packages are installed synchronously on vim startup if they haven't been
-installed already or asynchronously if sourcing vimrc. You can also update
-plugins asynchronously using |packup-:PackupUpdate|.
-
-Note: At present it only supports VIM, support for NeoVIM is being added.
-      This section will be removed once that has been released.
+All packages are installed synchronously on vim / neovim startup if they
+haven't been installed already or asynchronously if sourcing vimrc. You can
+also update plugins asynchronously using |packup-:PackupUpdate|.
 
 ==============================================================================
 INSTALLATION                                             *packup-installation*

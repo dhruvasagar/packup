@@ -33,7 +33,8 @@ endfunction
 
 function! s:plugin_methods.exec_do() dict abort
   if !empty(self['do'])
-    noautocmd let l:pwd = chdir(self['path'])
+    let l:pwd = getcwd()
+    exec 'noautocmd chdir' self['path']
     try
       echom 'packup: ' .self['name'] . ' executing Do Callback'
       if type(self['do']) == v:t_string
@@ -44,7 +45,7 @@ function! s:plugin_methods.exec_do() dict abort
     catch
       echohl ErrorMsg | echom v:throwpoint | echom v:exception | echohl None
     finally
-      noautocmd call chdir(l:pwd)
+      exec 'noautocmd chdir' l:pwd
     endtry
   endif
 endfunction

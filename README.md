@@ -1,28 +1,24 @@
-# PackUp v0.1.0
+# PackUp v0.2.0
 
 A small wrapper around git for automating process of installing / updating
-plugins
+/ removing vim / neovim plugins
 
 ## Overview
 
-VIM already has support for `packages`, so all that's left for us to automate
-is adding / removing / updating them leveraging `git`.
+Packup helps to automates adding / removing / updating `packages`
+**synchronously** on vim / neovim startup if they haven't been installed
+already and **asynchronously** when updating using the `PackupUpdate` command.
 
-That's what this plugin does, as a bonus it provides an ability to do so
-asynchronously leveraging vim's `jobs`.
-
-> NOTE: This only supports `VIM`, support for `NeoVIM` is being added.
-
-This also provides a few basic needed features :
+Additionall it also provides the following features :
 
 * Lazy loading plugins
-* Freeze plugins
+* Ability to Freeze plugins (skipping updates)
 * Install plugins from a specific branch / ref
 * Post installation hook
 
 ## Requirements
 
-* Vim 8+ (preferably latest)
+* Vim 8+ (preferably latest) or NeoVIM
 * Git 1.9+
 * OS: Linux / OSX (Probably works on Windows but hasn't been tested)
 

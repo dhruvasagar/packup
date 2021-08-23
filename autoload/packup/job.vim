@@ -16,10 +16,14 @@ function! s:job_err_handler(channel, msg) abort
 endfunction
 
 function! s:nvim_job_handler(callback, job_id, data, event) abort
-  if a:event == "stderr"
-    echom 'packup: job: err: '.string(a:data)
-  elseif a:event == "exit"
-    echom 'packup: job: exit: '.string(a:data)
+  if !empty(a:data) && (type(a:data) == v:t_list && !empty(a:data[0]))
+    if a:event == "stderr"
+      echom 'nvim packup: job: err: '.string(a:data)
+    elseif a:event == "exit"
+      echom 'nvim packup: job: exit: '.string(a:data)
+      call a:callback()
+    endif
+  else
     call a:callback()
   endif
 endfunction

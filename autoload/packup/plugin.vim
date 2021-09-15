@@ -2,8 +2,8 @@ function! s:is_git(plugin_path) abort
   return a:plugin_path =~# '\.git$'
 endfunction
 
-function! s:is_not_local(plugin_path) abort
-  return a:plugin_path !~# '/'
+function! s:is_local(plugin_path) abort
+  return isdirectory(a:plugin_path)
 endfunction
 
 function! s:get_name(plugin_path) abort
@@ -16,7 +16,7 @@ endfunction
 
 function! s:get_path(plugin_path, type) abort
   let path = a:plugin_path
-  if s:is_git(path) || s:is_not_local(path)
+  if !s:is_local(path) && s:is_git(path)
     let path = g:packup_path.'/'.a:type.'/'.s:get_name(path)
   endif
   return path

@@ -86,7 +86,7 @@ function! s:plugin_methods.post_install() dict abort
         \ '--hard',
         \ self['rev']
         \]
-  call packup#job#new(cmd, self.finalize_install)
+  call packup#job#new(self['name'], cmd, self.finalize_install)
 endfunction
 
 function! s:plugin_methods.clone() dict abort
@@ -101,7 +101,7 @@ function! s:plugin_methods.clone() dict abort
     if !empty(self['branch'])
       let cmd += ['--branch=' . self['branch']]
     endif
-    call packup#job#new(cmd, self.post_install)
+    call packup#job#new(self['name'], cmd, self.post_install)
   endif
 endfunction
 
@@ -128,7 +128,7 @@ function! s:plugin_methods.update() dict abort
         \ '--quiet',
         \ '--ff-only'
         \]
-  call packup#job#new(cmd, self.post_install)
+  call packup#job#new(self['name'], cmd, self.post_install)
 endfunction
 
 function! packup#plugin#new(plugin_url, ...) abort

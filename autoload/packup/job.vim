@@ -11,8 +11,8 @@ function! s:job_exit_handler(callback, channel, msg) abort
   call a:callback()
 endfunction
 
-function! s:job_err_handler(channel, msg) abort
-  echom 'packup: job: err: '.a:msg
+function! s:job_err_handler(ctx, channel, msg) abort
+  echom 'packup: job: '.a:ctx.' err: '.a:msg
 endfunction
 
 function! s:nvim_job_handler(callback, job_id, data, event) abort
@@ -28,7 +28,7 @@ function! s:nvim_job_handler(callback, job_id, data, event) abort
   endif
 endfunction
 
-function! packup#job#new(cmd, ...) abort
+function! packup#job#new(name, cmd, ...) abort
   let Callback = a:0 ? a:1 : {->''}
   let cmd = join(a:cmd, ' ')
   if has('vim_starting')
@@ -46,7 +46,7 @@ function! packup#job#new(cmd, ...) abort
           \ 'in_io': 'null',
           \ 'out_mode': 'nl',
           \ 'out_cb': function('s:job_out_handler'),
-          \ 'err_cb': function('s:job_err_handler'),
+          \ 'err_cb': function('s:job_err_handler', [a:name]),
           \ 'exit_cb': function('s:job_exit_handler', [Callback])
           \})
     return job

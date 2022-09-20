@@ -32,7 +32,7 @@ function! packup#autoremove() abort
       if f =~# '\/opt\/packup' | continue | endif
       if index(plugin_paths, f) < 0
         echom 'Removing '.f
-        call packup#job#new(['rm -rf', f])
+        call packup#job#new('autoremove', ['rm -rf', f])
       endif
     endfor
   endfor
